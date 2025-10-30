@@ -1,1 +1,1 @@
-java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp target/average-1.0.0-SNAPSHOT.jar dev.morling.onebrc.CalculateAverage_thomaswue --worker
+java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp target/benchmarks.jar dev.morling.onebrc.CalculateAverage_thomaswue --worker

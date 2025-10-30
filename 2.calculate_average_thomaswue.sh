@@ -21,6 +21,5 @@ if [ -f target/CalculateAverage_thomaswue_image ]; then
 else
     JAVA_OPTS="--enable-preview"
     echo "Chosing to run the app in JVM mode as no native image was found, use prepare_thomaswue.sh to generate." 1>&2
-    java $JAVA_OPTS --class-path target/average-1.0.0-SNAPSHOT.jar dev.morling.onebrc.CalculateAverage_thomaswue
+    java $JAVA_OPTS --class-path target/benchmarks.jar dev.morling.onebrc.CalculateAverage_thomaswue
 fi
-
