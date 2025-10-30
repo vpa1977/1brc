@@ -15,7 +15,9 @@
  */
 package dev.morling.onebrc;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.channels.FileChannel;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,12 +48,6 @@ public class CalculateAverage_thomaswue {
     private static final int HASH_TABLE_SIZE = 1 << 17;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        // Start worker subprocess if this process is not the worker.
-        if (args.length == 0 || !("--worker".equals(args[0]))) {
-            spawnWorker();
-            return;
-        }
-
         int numberOfWorkers = Runtime.getRuntime().availableProcessors();
         try (var fileChannel = FileChannel.open(java.nio.file.Path.of(FILE), java.nio.file.StandardOpenOption.READ)) {
             long fileSize = fileChannel.size();
@@ -76,6 +72,7 @@ public class CalculateAverage_thomaswue {
             }
 
             // Final output.
+            System.setOut(new PrintStream(new FileOutputStream("/dev/null")));
             System.out.println(accumulateResults(allResults));
             System.out.flush();
         }

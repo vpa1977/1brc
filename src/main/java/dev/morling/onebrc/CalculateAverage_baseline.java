@@ -17,7 +17,9 @@ package dev.morling.onebrc;
 
 import static java.util.stream.Collectors.*;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -86,7 +88,6 @@ public class CalculateAverage_baseline {
         Map<String, ResultRow> measurements = new TreeMap<>(Files.lines(Paths.get(FILE))
                 .map(l -> new Measurement(l.split(";")))
                 .collect(groupingBy(m -> m.station(), collector)));
-
         System.out.println(measurements);
     }
 }
