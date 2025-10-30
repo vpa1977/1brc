@@ -32,4 +32,8 @@ NATIVE_IMAGE_OPTS="$NATIVE_IMAGE_OPTS --gc=epsilon -H:-GenLoopSafepoints"
 # Uncomment the following line for outputting the compiler graph to the IdealGraphVisualizer
 # NATIVE_IMAGE_OPTS="$NATIVE_IMAGE_OPTS -H:MethodFilter=CalculateAverage_thomaswue.* -H:Dump=:2 -H:PrintGraph=Network"
 
-native-image $NATIVE_IMAGE_OPTS -cp target/average-1.0.0-SNAPSHOT.jar:target/loop.jar -o target/loop_image Loop
+native-image $NATIVE_IMAGE_OPTS -cp target/benchmarks.jar -o target/benchmark_image_baseline dev.morling.onebrc.CalculateAverage_baseline
+native-image $NATIVE_IMAGE_OPTS -cp target/benchmarks.jar -o target/benchmark_image_best dev.morling.onebrc.CalculateAverage_thomaswue
+
+native-image $NATIVE_IMAGE_OPTS -cp target/benchmarks.jar -o target/benchmark_image_baseline_loop benchmarks.Loop_baseline
+native-image $NATIVE_IMAGE_OPTS -cp target/benchmarks.jar -o target/benchmark_image_best_loop benchmarks.Loop_best
