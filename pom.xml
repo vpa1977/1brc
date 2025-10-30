@@ -1,353 +1,173 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
+Copyright (c) 2014, Oracle America, Inc.
+All rights reserved.
 
-     Copyright 2023 The original authors
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
 
-         http://www.apache.org/licenses/LICENSE-2.0
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
 
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
+ * Neither the name of Oracle nor the names of its contributors may be used
+   to endorse or promote products derived from this software without
+   specific prior written permission.
 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.morling.demos</groupId>
-  <artifactId>average</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.release>25</maven.compiler.release>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+    <groupId>org.sample</groupId>
+    <artifactId>test</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
 
-  <name>My OSS Project</name>
-  <description>My Latest OSS Project</description>
-  <inceptionYear>2021</inceptionYear>
-  <url>tbd.</url>
+    <name>JMH benchmark sample: Java</name>
 
-  <licenses>
-    <license>
-      <name>Apache-2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+    <!--
+       This is the demo/sample template build script for building Java benchmarks with JMH.
+       Edit as needed.
+    -->
 
-  <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>5.8.1</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-  </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.21.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.openjdk.jmh</groupId>
-        <artifactId>jmh-core</artifactId>
-        <version>1.37</version> <!-- Use the latest version -->
-    </dependency>
-    <dependency>
-        <groupId>org.openjdk.jmh</groupId>
-        <artifactId>jmh-generator-annprocess</artifactId>
-        <version>1.37</version> <!-- Use the latest version -->
-        <scope>provided</scope> <!-- Or <scope>test</scope> if only for testing -->
-    </dependency>
-  </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-  <build>
-    <!-- Keep alphabetic order -->
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>4.1</version>
-        </plugin>
-        <plugin>
-          <groupId>net.revelc.code.formatter</groupId>
-          <artifactId>formatter-maven-plugin</artifactId>
-          <version>2.16.0</version>
-          <configuration>
-            <configFile>etc/eclipse-formatter-config.xml</configFile>
-            <directories>
-              <directory>${project.build.sourceDirectory}</directory>
-              <directory>${project.basedir}/src/main/java-22</directory>
-            </directories>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>net.revelc.code</groupId>
-          <artifactId>impsort-maven-plugin</artifactId>
-          <version>1.9.0</version>
-          <configuration>
-            <groups>java.,javax.,org.,com.</groups>
-            <removeUnused>true</removeUnused>
-            <staticAfter>true</staticAfter>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.12.1</version>
-          <configuration>
-            <parameters>true</parameters>
-            <compilerArgs>
-              <!--
-                IntelliJ does not yet support the enablePreview configuration option.
-                Therefore, we use a compiler argument.
-                See https://youtrack.jetbrains.com/issue/IDEA-296303
-              -->
-              <compilerArg>--enable-preview</compilerArg>
-              <compilerArg>--add-modules</compilerArg>
-              <compilerArg>java.base,jdk.incubator.vector</compilerArg>
-              <compilerArg>--add-opens=java.base/java.lang=ALL-UNNAMED</compilerArg>
-              <compilerArg>--add-opens=java.base/jdk.internal.util=ALL-UNNAMED</compilerArg>
-            </compilerArgs>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-wrapper-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.7.1</version>
-            <configuration>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>assemble-all</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+        <!--
+            JMH version to use with this project.
+          -->
+        <jmh.version>1.37</jmh.version>
 
-  </build>
-  <profiles>
-    <profile>
-      <id>ci</id>
-      <build>
+        <maven.compiler.release>25</maven.compiler.release>
+
+        <!--
+            Name of the benchmark Uber-JAR to generate.
+          -->
+        <uberjar.name>benchmarks</uberjar.name>
+    </properties>
+
+    <build>
         <plugins>
-          <plugin>
-            <groupId>net.revelc.code.formatter</groupId>
-            <artifactId>formatter-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>validate-format</id>
-                <goals>
-                  <goal>validate</goal>
-                </goals>
-                <phase>validate</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>qa</id>
-      <activation>
-        <property>
-          <name>!quick</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.mycila</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <configuration>
-              <header>etc/license.txt</header>
-              <strictCheck>true</strictCheck>
-              <aggregate>true</aggregate>
-              <excludes>
-                <exclude>LICENSE.txt</exclude>
-                <exclude>**/.dontdelete</exclude>
-                <exclude>**/measurements*.txt</exclude>
-                <exclude>**/measurements*.out</exclude>
-                <exclude>out_expected.txt</exclude>
-                <exclude>github_users.txt</exclude>
-                <!-- Cliff asked to be named as the copyright holder for his entry; -->
-                <exclude>src/main/java/dev/morling/onebrc/CalculateAverage_cliffclick.java</exclude>
-                <exclude>.sdkmanrc</exclude>
-              </excludes>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>net.revelc.code.formatter</groupId>
-            <artifactId>formatter-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>format</id>
-                <goals>
-                  <goal>format</goal>
-                </goals>
-                <phase>process-sources</phase>
-              </execution>
-            </executions>
-          </plugin>
-<!--          <plugin>-->
-<!--            <groupId>net.revelc.code</groupId>-->
-<!--            <artifactId>impsort-maven-plugin</artifactId>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>sort-imports</id>-->
-<!--                <goals>-->
-<!--                  <goal>sort</goal>-->
-<!--                </goals>-->
-<!--                <phase>process-sources</phase>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>enforce-plugin-versions</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <requireJavaVersion>
-                      <version>${maven.compiler.release}</version>
-                    </requireJavaVersion>
-                    <requirePluginVersions>
-                       <banLatest>true</banLatest>
-                       <banRelease>true</banRelease>
-                       <banSnapshots>true</banSnapshots>
-                       <phases>clean,deploy,site</phases>
-                    </requirePluginVersions>
-                  </rules>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>quick</id>
-      <activation>
-        <property>
-          <name>quick</name>
-        </property>
-      </activation>
-      <properties>
-        <skipTests>true</skipTests>
-      </properties>
-    </profile>
-    <profile>
-      <id>jdk22</id>
-      <activation>
-        <jdk>22</jdk>
-      </activation>
-      <properties>
-      </properties>
-      <build>
-        <pluginManagement>
-          <plugins>
             <plugin>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                <release>22</release>
-                <compileSourceRoots>
-                  <compileSourceRoot>${project.basedir}/src/main/java-22</compileSourceRoot>
-                  <!--
-                    Uncomment the next line to build the entire project with jdk22.
-                    Currently, some classes fail to compile under jdk22.
-                  -->
-                  <!-- <compileSourceRoot>${project.build.sourceDirectory}</compileSourceRoot> -->
-                </compileSourceRoots>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.openjdk.jmh</groupId>
+                            <artifactId>jmh-generator-annprocess</artifactId>
+                            <version>${jmh.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
-          </plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${uberjar.name}</finalName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.openjdk.jmh.Main</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <!--
+                                        Shading signed JARs will fail without this.
+                                        http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
+                                    -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.3</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.17</version>
+                </plugin>
+            </plugins>
         </pluginManagement>
-      </build>
-    </profile>
-  </profiles>
+    </build>
+
 </project>
